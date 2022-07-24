@@ -17,6 +17,10 @@ const Register = ({table}) => {
         });
     }
 
+    const remove_product = async () => {
+        return false;
+    }
+
     const get_products = async () => {
         const {data} = await axios.get('/api/products');
 
