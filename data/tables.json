@@ -1,0 +1,14 @@
+[
+  {
+    "number": 1,
+    "status": "empty"
+  },
+  {
+    "number": 2,
+    "status": "empty"
+  },
+  {
+    "number": 3,
+    "status": "full"
+  }
+]

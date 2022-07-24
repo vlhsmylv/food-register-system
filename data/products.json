@@ -1,0 +1,33 @@
+{
+  "drinks": [
+    {
+      "title": "Coca cola",
+      "size": "300ml",
+      "price": 1,
+      "style": {
+        "variant": "warning"
+      },
+      "image": "https://freepngimg.com/thumb/drinks/12-2-drink-png-5.png"
+    },
+    {
+      "title": "Sprite",
+      "size": "500ml",
+      "price": 2,
+      "style": {
+        "variant": "warning"
+      },
+      "image": "https://freepngimg.com/thumb/drinks/4-2-drink-png-thumb.png"
+    }
+  ],
+  "foods": [
+    {
+      "title": "Pizza",
+      "size": "lg",
+      "price": 20,
+      "style": {
+        "variant": "success"
+      },
+      "image": "https://freepngimg.com/thumb/pizza/26-pizza-png-image-thumb.png"
+    }
+  ]
+}
