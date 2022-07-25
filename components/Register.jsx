@@ -1,7 +1,7 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {Button} from "react-bootstrap";
 import axios from "axios";
-
+import ReactToPrint from "react-to-print";
 const Register = ({table}) => {
     const [checkout, setCheckout] = useState({
         products: [],
@@ -9,12 +9,23 @@ const Register = ({table}) => {
     })
     const [products, setProducts] = useState({});
     const [previewProduct, setPreviewProduct] = useState({});
+    const [wantToAdd, setWantToAdd] = useState(1);
+
+    const printRef = useRef();
 
     const add_product = async (product) => {
         setCheckout({
-            products: [...checkout.products, product],
-            price: checkout.price+product.price
+            products: [...checkout.products, {
+                image: product.image,
+                price: product.price*wantToAdd,
+                size: product.size,
+                style: product.style,
+                title: product.title,
+                amount: wantToAdd
+            }],
+            price: checkout.price+(product.price*wantToAdd)
         });
+        setWantToAdd(1);
     }
 
     const remove_product = async () => {
@@ -54,7 +65,8 @@ const Register = ({table}) => {
                 <h4>{title.toUpperCase()}</h4>
                 <div style={{
                     display: "flex",
-                    gap: "10px"
+                    gap: "10px",
+                    flexWrap: "wrap"
                 }}>
                     {category.map((product, i) => (
                         <Button onClick={() => {
@@ -76,9 +88,11 @@ const Register = ({table}) => {
     const Menu = () => {
         return (
             <div style={{
-                width: "700px",
+                width: "750px",
                 height: "70vh",
-                display: "flex"
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "20px"
             }}>
                 <div className={"me-3"} style={{
                     width: "400px",
@@ -113,7 +127,12 @@ const Register = ({table}) => {
                             <div className={"text-center"}>
                                 {previewProduct.price} ₼
                             </div>
-                            <div className={"text-center"}>
+                            <div className={"text-center"} style={{
+                                display: "flex",
+                                gap: "5px",
+                                justifyContent: "center"
+                            }}>
+                                <input className={"w-25 p-2 form-control-sm"} type="number" min={"1"} placeholder={"Ədəd"} value={wantToAdd} onChange={(e) => setWantToAdd(e.target.value)} />
                                 <Button variant={"success"} onClick={() => {
                                     add_product(previewProduct)
                                 }}>
@@ -130,7 +149,7 @@ const Register = ({table}) => {
     const CheckoutProduct = ({product, id}) => {
         return (
             <div>
-                <span>{product.title} <sub>{product.size}</sub></span>
+                <span>{product.title} <sub>{product.size}</sub> - <span className={"text-success fw-bold"}>{product.amount} ədəd</span></span>
                 <span className={"float-end"} style={{
                     display: "flex",
                     gap: "10px",
@@ -161,7 +180,7 @@ const Register = ({table}) => {
             <div style={{
                 width: "300px",
                 height: "70vh"
-            }}>
+            }} ref={printRef}>
                 <div className={"text-center pb-2"} style={{
                     borderBottom: "1px dashed black"
                 }}>
@@ -200,15 +219,34 @@ const Register = ({table}) => {
         )
     }
 
+    const CloseTable = () => {
+        return (
+            <div className={"mt-2 text-center"}>
+                <ReactToPrint
+                    trigger={() => (
+                        <Button variant={"warning"} className={"text-light"} disabled={checkout.products.length===0}>
+                            <i className="fa-solid fa-xmark"></i> Masani bagla
+                        </Button>
+                    )}
+                    content={() => printRef.current}
+                />
+            </div>
+        )
+    }
+
     return(
         <>
             <Nav />
             <div className={"m-3"} style={{
                 display: "flex",
-                gap: "20px"
+                gap: "20px",
+                flexWrap: "wrap"
             }}>
                 <Menu />
-                <Receipt />
+                <div>
+                    <Receipt />
+                    <CloseTable />
+                </div>
             </div>
         </>
     )

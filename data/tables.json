@@ -10,5 +10,13 @@
   {
     "number": 3,
     "status": "full"
+  },
+  {
+    "number": "Paket Daxili",
+    "status": "empty"
+  },
+  {
+    "number": "Paket Xarici",
+    "status": "empty"
   }
 ]
